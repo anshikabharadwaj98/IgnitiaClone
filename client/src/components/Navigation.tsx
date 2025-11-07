@@ -1,16 +1,21 @@
 import { Link, useLocation } from "wouter";
-import { Home, Calendar, DollarSign, Users, Mail, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { SiYoutube, SiInstagram, SiFacebook, SiLinkedin } from "react-icons/si";
 import { FaXTwitter } from "react-icons/fa6";
 
-const navItems = [
-  { path: "/", label: "HOME", icon: Home },
-  { path: "/events", label: "EVENTS", icon: Calendar },
-  { path: "/sponsors", label: "SPONSORS", icon: DollarSign },
-  { path: "/team", label: "TEAM", icon: Users },
-  { path: "/contact", label: "CONTACT", icon: Mail },
+const leftMenuItems = [
+  { path: "/", label: "Home" },
+  { path: "/sponsors", label: "Sponsors" },
+  { path: "/events", label: "Events" },
+  { path: "/team", label: "Team" },
+];
+
+const rightMenuItems = [
+  { path: "/contact", label: "Contact Us" },
+  { path: "/gallery", label: "Gallery" },
+  { path: "/about", label: "About" },
 ];
 
 const socialLinks = [
@@ -23,116 +28,131 @@ const socialLinks = [
 
 export default function Navigation() {
   const [location] = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-background/80 border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent" style={{ fontFamily: 'Orbitron, sans-serif' }}>
-              IGNITIA
-            </span>
-          </Link>
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-background/80 border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="flex items-center justify-between h-16">
+            <Link href="/" className="flex items-center gap-2 group" onClick={() => setMenuOpen(false)}>
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+                IGNITIA
+              </span>
+            </Link>
 
-          <div className="hidden md:flex items-center gap-6">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location === item.path;
-              return (
-                <Link key={item.path} href={item.path}>
-                  <button
-                    className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all hover-elevate ${
-                      isActive
-                        ? "text-primary"
-                        : "text-foreground/80 hover:text-foreground"
-                    }`}
-                    data-testid={`link-nav-${item.label.toLowerCase()}`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </button>
-                </Link>
-              );
-            })}
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-3">
+                {socialLinks.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      data-testid={`link-social-${social.label.toLowerCase()}`}
+                    >
+                      <Button variant="ghost" size="icon" className="w-8 h-8">
+                        <Icon className="w-4 h-4" />
+                      </Button>
+                    </a>
+                  );
+                })}
+              </div>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMenuOpen(!menuOpen)}
+                data-testid="button-menu-toggle"
+                className="relative z-50"
+              >
+                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </Button>
+            </div>
           </div>
-
-          <div className="hidden md:flex items-center gap-3">
-            {socialLinks.map((social) => {
-              const Icon = social.icon;
-              return (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  data-testid={`link-social-${social.label.toLowerCase()}`}
-                >
-                  <Button variant="ghost" size="icon" className="w-8 h-8">
-                    <Icon className="w-4 h-4" />
-                  </Button>
-                </a>
-              );
-            })}
-          </div>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            data-testid="button-mobile-menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </Button>
         </div>
-      </div>
+      </nav>
 
-      {mobileMenuOpen && (
-        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-lg">
-          <div className="px-4 py-6 space-y-3">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location === item.path;
-              return (
-                <Link key={item.path} href={item.path}>
-                  <button
-                    className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg text-left transition-all hover-elevate ${
-                      isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-foreground/80 hover:text-foreground"
-                    }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                    data-testid={`link-nav-mobile-${item.label.toLowerCase()}`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span className="font-medium">{item.label}</span>
-                  </button>
-                </Link>
-              );
-            })}
-            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                  >
-                    <Button variant="ghost" size="icon" className="w-9 h-9">
-                      <Icon className="w-4 h-4" />
-                    </Button>
-                  </a>
-                );
-              })}
+      {menuOpen && (
+        <div className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl">
+          <div className="h-full flex flex-col items-center justify-center px-4 py-20">
+            <div className="max-w-6xl w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mb-12">
+                <div className="border border-primary/30 rounded-lg p-8 md:p-12 space-y-4">
+                  {leftMenuItems.map((item) => {
+                    const isActive = location === item.path;
+                    return (
+                      <Link key={item.path} href={item.path}>
+                        <button
+                          className={`w-full text-left text-xl md:text-2xl font-medium transition-all hover:text-primary hover:translate-x-2 ${
+                            isActive ? "text-primary" : "text-foreground"
+                          }`}
+                          onClick={() => setMenuOpen(false)}
+                          data-testid={`link-menu-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+                          style={{ fontFamily: 'Rajdhani, sans-serif' }}
+                        >
+                          {item.label}
+                        </button>
+                      </Link>
+                    );
+                  })}
+                </div>
+
+                <div className="border border-accent/30 rounded-lg p-8 md:p-12 space-y-4">
+                  {rightMenuItems.map((item) => {
+                    const isActive = location === item.path;
+                    return (
+                      <Link key={item.path} href={item.path}>
+                        <button
+                          className={`w-full text-left text-xl md:text-2xl font-medium transition-all hover:text-accent hover:translate-x-2 ${
+                            isActive ? "text-accent" : "text-foreground"
+                          }`}
+                          onClick={() => setMenuOpen(false)}
+                          data-testid={`link-menu-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+                          style={{ fontFamily: 'Rajdhani, sans-serif' }}
+                        >
+                          {item.label}
+                        </button>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center gap-6">
+                <div className="flex items-center gap-4">
+                  {socialLinks.map((social) => {
+                    const Icon = social.icon;
+                    return (
+                      <a
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.label}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <Icon className="w-6 h-6" />
+                      </a>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  className="px-8 py-3 border border-primary/30 rounded-lg text-sm font-medium hover:bg-primary/10 transition-all"
+                  data-testid="button-close-menu"
+                >
+                  Close menu
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
-    </nav>
+    </>
   );
 }

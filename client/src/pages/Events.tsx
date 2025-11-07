@@ -2,6 +2,7 @@ import { useState } from "react";
 import EventCard from "@/components/EventCard";
 import { Button } from "@/components/ui/button";
 import { Code, Mic, BookOpen, Trophy, Cpu, Guitar, Palette, Brain } from "lucide-react";
+import particle from "@assets/generated_images/Particle_effect_element_e11156f1.png";
 
 const categories = ["All", "Technical", "Cultural", "Literary"] as const;
 type Category = typeof categories[number];
@@ -73,6 +74,13 @@ const events = [
   },
 ];
 
+const categoryBackgrounds = {
+  Technical: "from-primary/20 via-background to-background",
+  Cultural: "from-accent/20 via-background to-background",
+  Literary: "from-chart-2/20 via-background to-background",
+  All: "from-primary/10 via-accent/10 to-background",
+};
+
 export default function Events() {
   const [selectedCategory, setSelectedCategory] = useState<Category>("All");
 
@@ -81,8 +89,23 @@ export default function Events() {
     : events.filter(event => event.category === selectedCategory);
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+    <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">
+      <div className={`absolute inset-0 bg-gradient-to-b ${categoryBackgrounds[selectedCategory]} transition-all duration-700`} />
+      
+      <div className="absolute top-20 left-10 w-20 h-20 opacity-20 animate-float">
+        <img src={particle} alt="" className="w-full h-full" />
+      </div>
+      <div className="absolute top-1/3 right-20 w-16 h-16 opacity-30 animate-float" style={{ animationDelay: "1s" }}>
+        <img src={particle} alt="" className="w-full h-full" />
+      </div>
+      <div className="absolute bottom-1/4 left-1/4 w-24 h-24 opacity-15 animate-float" style={{ animationDelay: "2s" }}>
+        <img src={particle} alt="" className="w-full h-full" />
+      </div>
+      <div className="absolute top-1/2 right-1/3 w-18 h-18 opacity-25 animate-float" style={{ animationDelay: "0.5s" }}>
+        <img src={particle} alt="" className="w-full h-full" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>
             Our <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Events</span>
@@ -99,6 +122,7 @@ export default function Events() {
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
               data-testid={`button-filter-${category.toLowerCase()}`}
+              className="backdrop-blur-sm"
             >
               {category}
             </Button>

@@ -11,6 +11,8 @@ import Events from "@/pages/Events";
 import Sponsors from "@/pages/Sponsors";
 import Team from "@/pages/Team";
 import Contact from "@/pages/Contact";
+import Gallery from "@/pages/Gallery";
+import About from "@/pages/About";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,6 +23,8 @@ function Router() {
       <Route path="/sponsors" component={Sponsors} />
       <Route path="/team" component={Team} />
       <Route path="/contact" component={Contact} />
+      <Route path="/gallery" component={Gallery} />
+      <Route path="/about" component={About} />
       <Route component={NotFound} />
     </Switch>
   );
