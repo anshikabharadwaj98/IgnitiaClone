@@ -1,4 +1,6 @@
+import { useState } from "react";
 import SponsorCard from "@/components/SponsorCard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const sponsors = {
   title: [
@@ -26,6 +28,8 @@ const sponsors = {
 };
 
 export default function Sponsors() {
+  const [activeTab, setActiveTab] = useState("all");
+
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -38,51 +42,93 @@ export default function Sponsors() {
           </p>
         </div>
 
-        <div className="space-y-16">
-          <div>
-            <h2 className="text-2xl font-bold text-center mb-8 text-primary" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-              Title Sponsor
-            </h2>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-5 mb-12">
+            <TabsTrigger value="all" data-testid="tab-all">All</TabsTrigger>
+            <TabsTrigger value="title" data-testid="tab-title">Title</TabsTrigger>
+            <TabsTrigger value="platinum" data-testid="tab-platinum">Platinum</TabsTrigger>
+            <TabsTrigger value="gold" data-testid="tab-gold">Gold</TabsTrigger>
+            <TabsTrigger value="silver" data-testid="tab-silver">Silver</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="all" className="space-y-16">
+            <div>
+              <h2 className="text-2xl font-bold text-center mb-8 text-primary" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                Title Sponsor
+              </h2>
+              <div className="max-w-md mx-auto">
+                {sponsors.title.map((sponsor, idx) => (
+                  <SponsorCard key={idx} {...sponsor} />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-center mb-8" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                Platinum Sponsors
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {sponsors.platinum.map((sponsor, idx) => (
+                  <SponsorCard key={idx} {...sponsor} />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-center mb-8" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                Gold Sponsors
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {sponsors.gold.map((sponsor, idx) => (
+                  <SponsorCard key={idx} {...sponsor} />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-center mb-8" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                Silver Sponsors
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                {sponsors.silver.map((sponsor, idx) => (
+                  <SponsorCard key={idx} {...sponsor} />
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="title">
             <div className="max-w-md mx-auto">
               {sponsors.title.map((sponsor, idx) => (
                 <SponsorCard key={idx} {...sponsor} />
               ))}
             </div>
-          </div>
+          </TabsContent>
 
-          <div>
-            <h2 className="text-2xl font-bold text-center mb-8" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-              Platinum Sponsors
-            </h2>
+          <TabsContent value="platinum">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {sponsors.platinum.map((sponsor, idx) => (
                 <SponsorCard key={idx} {...sponsor} />
               ))}
             </div>
-          </div>
+          </TabsContent>
 
-          <div>
-            <h2 className="text-2xl font-bold text-center mb-8" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-              Gold Sponsors
-            </h2>
+          <TabsContent value="gold">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {sponsors.gold.map((sponsor, idx) => (
                 <SponsorCard key={idx} {...sponsor} />
               ))}
             </div>
-          </div>
+          </TabsContent>
 
-          <div>
-            <h2 className="text-2xl font-bold text-center mb-8" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-              Silver Sponsors
-            </h2>
+          <TabsContent value="silver">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
               {sponsors.silver.map((sponsor, idx) => (
                 <SponsorCard key={idx} {...sponsor} />
               ))}
             </div>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
 
         <div className="mt-16 text-center">
           <p className="text-muted-foreground mb-4">
