@@ -2,6 +2,20 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
+const originalStderrWrite = process.stderr.write.bind(process.stderr);
+process.stderr.write = ((chunk: any, encoding?: any, callback?: any): boolean => {
+  const message = chunk.toString();
+  if (message.includes('A PostCSS plugin did not pass the `from` option')) {
+    if (typeof encoding === 'function') {
+      encoding();
+    } else if (typeof callback === 'function') {
+      callback();
+    }
+    return true;
+  }
+  return originalStderrWrite(chunk, encoding, callback);
+}) as typeof process.stderr.write;
+
 const app = express();
 
 declare module 'http' {
