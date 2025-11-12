@@ -8,6 +8,32 @@ This is a full-stack web application for Ignitia 2K25, the flagship techno-cultu
 
 Preferred communication style: Simple, everyday language.
 
+## Deployment Notes
+
+### Vercel Deployment
+
+The project is configured for deployment to Vercel with the following setup:
+- Build command: `npm run build`
+- Start command: `npm run start`
+- Output directory: `dist/public` (frontend), `dist` (backend)
+
+### Known Build Warnings
+
+**PostCSS Warning (Harmless):**
+During the build process, you may see this warning:
+```
+A PostCSS plugin did not pass the `from` option to `postcss.parse`.
+This may cause imported assets to be incorrectly transformed.
+```
+
+**This is a known issue in Tailwind CSS v3.4.3+** (see [GitHub Issue #13591](https://github.com/tailwindlabs/tailwindcss/issues/13591)) and is completely harmless. It occurs when custom CSS utilities are used with pseudo-element variants and does not affect:
+- Build success (exit code 0)
+- Application functionality
+- Vercel deployment (warnings do not fail builds, only errors do)
+- Asset transformation or styling
+
+The warning has been addressed in Tailwind CSS v4, but for v3 projects it can be safely ignored. Vercel will log this warning but proceed with successful deployment.
+
 ## System Architecture
 
 ### Frontend Architecture

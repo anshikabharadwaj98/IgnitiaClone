@@ -1,18 +1,9 @@
-import { defineConfig, createLogger } from "vite";
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
-const logger = createLogger();
-const originalWarn = logger.warn;
-
-logger.warn = (msg, options) => {
-  if (msg.includes('from option') || msg.includes('postcss.parse')) return;
-  originalWarn(msg, options);
-};
-
 export default defineConfig({
-  customLogger: logger,
   plugins: [
     react(),
     runtimeErrorOverlay(),
@@ -39,12 +30,6 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    rollupOptions: {
-      onwarn(warning, warn) {
-        if (warning.message.includes('from option')) return;
-        warn(warning);
-      },
-    },
   },
   server: {
     fs: {
