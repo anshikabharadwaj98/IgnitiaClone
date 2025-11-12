@@ -3,6 +3,4 @@ export default {
     tailwindcss: {},
     autoprefixer: {},
   },
-  // Suppress the PostCSS warning about missing 'from' option
-  map: false,
 }
